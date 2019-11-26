@@ -17,12 +17,13 @@ class MainScreen extends Component {
 
   compile = async () => {
     let { code, input } = this.state;
-    const info = {
+    const params = {
+      timeStamp: Date.now(),
       code: code,
       input: input
     };
     await axios
-      .post(this.state.machine + "/get-data", { info })
+      .get(this.state.machine + "/compile-cpp", { params })
       .then(res => this.setState({ output: res.data }));
   };
 
