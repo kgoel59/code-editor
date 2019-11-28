@@ -9,6 +9,7 @@ import InputArea from "./InputArea";
 class MainScreen extends Component {
   state = {
     output: "",
+    time_taken: "",
     code: "",
     input: "",
     machine:
@@ -20,11 +21,15 @@ class MainScreen extends Component {
     const params = {
       timeStamp: Date.now(),
       code: code,
-      input: input
+      input: input,
+      timeout: 200,
+      language: "c++"
     };
     await axios
-      .get(this.state.machine + "/compile-cpp", { params })
-      .then(res => this.setState({ output: res.data }));
+      .post(this.state.machine + "/compile", { params })
+      .then(res =>
+        this.setState({ output: res.data.out, time_taken: res.data.time.time_taken })
+      );
   };
 
   handleCodeChange = data => {
@@ -50,7 +55,8 @@ class MainScreen extends Component {
             </MDBBtn>
           </MDBCol>
         </MDBRow>
-        {this.state.output}
+        {this.state.output + " "}
+        {this.state.time_taken}
       </MDBContainer>
     );
   }
