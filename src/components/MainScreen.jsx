@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { MDBContainer, MDBRow, MDBCol, MDBBtn } from "mdbreact";
 import axios from "axios";
+import io from "socket.io-client";
 
 import NavBar from "./NavBar";
 import CodeArea from "./CodeArea";
@@ -8,6 +9,7 @@ import InputArea from "./InputArea";
 
 class MainScreen extends Component {
   state = {
+    server: "http://localhost:5000",
     output: "",
     time_taken: "",
     code: "",
@@ -18,20 +20,40 @@ class MainScreen extends Component {
 
   compile = async () => {
     let { code, input } = this.state;
-    const params = {
-      timeStamp: Date.now(),
-      code: code,
+    const { server } = this.state;
+    const socket = io.connect(server);
+    let params = {
+      id: Date.now(),
       input: input,
-      timeout: 200,
+      timeout: 300,
       language: "c++"
     };
-    await axios
-      .post(this.state.machine + "/compile", { params })
-      .then(res =>
-        this.setState({ output: res.data.out, time_taken: res.data.time.time_taken })
-      );
+    
+    
+    socket.emit("compile", { code: code, params: params });
+
+    
+
+    socket.on(params.id, data => this.setState({output:data.out}));
+    // await axios
+    //   .post("http://localhost:5000/compile", {
+    //     params
+    //   })
+    //   .then(
+    //     res =>
+    //       this.setState({
+    //         output: res.data.out
+    //         //time_taken: res.data.time.time_taken
+    //       })
+    //     // console.log(res.data)
+    //   );
+
+    
   };
 
+  componentDidMount = () => {
+    
+  };
   handleCodeChange = data => {
     this.setState({ code: data });
   };
@@ -55,8 +77,8 @@ class MainScreen extends Component {
             </MDBBtn>
           </MDBCol>
         </MDBRow>
-        {this.state.output + " "}
-        {this.state.time_taken}
+        {this.state.output + "\n"}
+        {this.state.time_taken + "\n"}
       </MDBContainer>
     );
   }
