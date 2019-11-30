@@ -20,33 +20,32 @@ class MainScreen extends Component {
 
   compile = async () => {
     let { code, input } = this.state;
-    const { server } = this.state;
-    const socket = io.connect(server);
+    //const { server } = this.state;
+    // const socket = io.connect(server);
     let params = {
-      id: Date.now(),
+      code: code,
       input: input,
-      timeout: 300,
-      language: "c++"
+      language: "C++"
     };
     
     
-    socket.emit("compile", { code: code, params: params });
+    // socket.emit("compile", { code: code, params: params });
 
     
 
-    socket.on(params.id, data => this.setState({output:data.out}));
-    // await axios
-    //   .post("http://localhost:5000/compile", {
-    //     params
-    //   })
-    //   .then(
-    //     res =>
-    //       this.setState({
-    //         output: res.data.out
-    //         //time_taken: res.data.time.time_taken
-    //       })
-    //     // console.log(res.data)
-    //   );
+    // socket.on(params.id, data => this.setState({output:data.out}));
+    await axios
+      .post("http://localhost:5000/compile", {
+        params
+      })
+      .then(
+        res =>
+          // this.setState({
+          //   output: res.data
+          //   //time_taken: res.data.time.time_taken
+          // })
+         console.log(res.data)
+      );
 
     
   };
