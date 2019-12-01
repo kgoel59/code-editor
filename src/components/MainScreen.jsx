@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { MDBContainer, MDBRow, MDBCol, MDBBtn } from "mdbreact";
-import axios from "axios";
+import {randomBytes} from 'crypto';
 import io from "socket.io-client";
 
 import NavBar from "./NavBar";
@@ -9,9 +9,10 @@ import InputArea from "./InputArea";
 
 class MainScreen extends Component {
   state = {
-    server: "http://localhost:5000",
+    server: "http://ec2-54-145-157-213.compute-1.amazonaws.com:5000/",
     output: "",
-    time_taken: "",
+    exec_time: "",
+    err: "",
     code: "",
     input: "",
     machine:
@@ -19,33 +20,19 @@ class MainScreen extends Component {
   };
 
   compile = async () => {
-    let { code, input } = this.state;
-    //const { server } = this.state;
-    // const socket = io.connect(server);
+    const { code, input } = this.state;
+    const { server } = this.state;
+    const socket = io.connect(server);
     let params = {
+      id: randomBytes(10).toString('hex'),
       code: code,
       input: input,
       language: "C++"
     };
     
-    
-    // socket.emit("compile", { code: code, params: params });
+    socket.emit("compile", { code: code, params: params });
 
-    
-
-    // socket.on(params.id, data => this.setState({output:data.out}));
-    await axios
-      .post("http://localhost:5000/compile", {
-        params
-      })
-      .then(
-        res =>
-          // this.setState({
-          //   output: res.data
-          //   //time_taken: res.data.time.time_taken
-          // })
-         console.log(res.data)
-      );
+    socket.on(params.id, data => this.setState({output: data.output, exec_time: data.exec_time, err: data.err}));
 
     
   };
@@ -76,8 +63,8 @@ class MainScreen extends Component {
             </MDBBtn>
           </MDBCol>
         </MDBRow>
-        {this.state.output + "\n"}
-        {this.state.time_taken + "\n"}
+        {"Output: " + this.state.output + "  Execution Time: "+this.state.exec_time + "Err: "+ this.state.err}
+        
       </MDBContainer>
     );
   }
