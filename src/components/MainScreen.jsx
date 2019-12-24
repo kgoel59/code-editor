@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { MDBContainer, MDBRow, MDBCol, MDBBtn } from "mdbreact";
-import {randomBytes} from 'crypto';
+import { randomBytes } from "crypto";
 import io from "socket.io-client";
 
 import NavBar from "./NavBar";
@@ -8,8 +8,10 @@ import CodeArea from "./CodeArea";
 import InputArea from "./InputArea";
 
 class MainScreen extends Component {
+  valueGetter = React.createRef();
+
   state = {
-    server: "http://ec2-54-145-157-213.compute-1.amazonaws.com:5000/",
+    server: "http://localhost:5000/",
     output: "",
     exec_time: "",
     err: "",
@@ -24,28 +26,35 @@ class MainScreen extends Component {
     const { server } = this.state;
     const socket = io.connect(server);
     let params = {
-      id: randomBytes(10).toString('hex'),
+      id: randomBytes(10).toString("hex"),
       code: code,
       input: input,
       language: "C++"
     };
-    
+
     socket.emit("compile", { code: code, params: params });
 
-    socket.on(params.id, data => this.setState({output: data.output, exec_time: data.exec_time, err: data.err}));
-
-    
+    socket.on(params.id, async data => {
+      await this.setState({
+        output: data.output,
+        exec_time: data.exec_time,
+        err: data.err
+      });
+      alert(this.state.output);
+    });
   };
 
-  componentDidMount = () => {
-    
-  };
-  handleCodeChange = data => {
-    this.setState({ code: data });
+  handleCodeSubmit = async () => {
+    await this.setState({ code: this.valueGetter.current() });
+    this.compile();
   };
 
   handleInputChange = data => {
     this.setState({ input: data });
+  };
+
+  handleEditorDidMount = _valueGetter => {
+    this.valueGetter.current = _valueGetter;
   };
 
   render() {
@@ -54,17 +63,21 @@ class MainScreen extends Component {
         <NavBar />
         <MDBRow>
           <MDBCol md="7">
-            <CodeArea handleCodeChange={this.handleCodeChange} />
+            <CodeArea handleEditorDidMount={this.handleEditorDidMount} />
           </MDBCol>
           <MDBCol md="4">
             <InputArea handleInputChange={this.handleInputChange} />
-            <MDBBtn color="indigo" onClick={this.compile}>
+            <MDBBtn color="indigo" onClick={this.handleCodeSubmit}>
               Compile
             </MDBBtn>
           </MDBCol>
         </MDBRow>
-        {"Output: " + this.state.output + "  Execution Time: "+this.state.exec_time + "Err: "+ this.state.err}
-        
+        {"Output: " +
+          this.state.output +
+          "  Execution Time: " +
+          this.state.exec_time +
+          "Err: " +
+          this.state.err}
       </MDBContainer>
     );
   }
