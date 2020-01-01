@@ -7,18 +7,18 @@ import NavBar from "./NavBar";
 import CodeArea from "./CodeArea";
 import InputArea from "./InputArea";
 
+// general ip 
+let machine = window.location.protocol + "//" + window.location.hostname + ":" + 5000;
 class MainScreen extends Component {
   valueGetter = React.createRef();
 
   state = {
-    server: "http://localhost:5000/",
+    server: machine,
     output: "",
     exec_time: "",
     err: "",
     code: "",
     input: "",
-    machine:
-      window.location.protocol + "//" + window.location.hostname + ":" + 5000
   };
 
   compile = async () => {

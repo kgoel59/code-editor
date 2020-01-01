@@ -6,7 +6,7 @@ class CodeArea extends Component {
   render() {
     return (
 
-      <Editor height='90vh' language='cpp' editorDidMount={this.props.handleEditorDidMount} theme='dark'/>
+      <Editor height='90vh' language='javascript' editorDidMount={this.props.handleEditorDidMount} theme='dark'/>
     );
   }
 }
