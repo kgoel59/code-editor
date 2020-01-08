@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+        "module": "es2015",
+        "target": "es6",
+        "baseUrl": "src",
+        "paths": {
+            "assets": ["assets/*"],
+            "components": ["components/*"],
+            "layouts": ["layouts/*"],
+            "routes": ["routes/*"],
+            "views": ["views/*"],
+            "utils": ["utils/*"]
+        }
+    },
+    "include": [
+        "src/**/*"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}

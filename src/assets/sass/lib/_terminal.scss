@@ -1,0 +1,41 @@
+.terminal {
+    flex: 1;
+    .io {
+        height: 100%;
+        display: flex;
+
+        .input {
+            width: 100%;
+            .input-area {
+                background-color: black;
+                color: white;
+                border: 0px;
+                border-radius: 0px;
+                width: 100%;
+                height: 100%;
+            }
+        }
+        .output {
+            width: 100%;
+            .output-area {
+                background-color: #121111;
+                width: 100%;
+                height: 100%;
+            }
+        }
+    }
+
+    .menu {
+        background-color: #121111;
+
+        .nav-item {
+            color: grey;
+            padding: 5px;
+            font-size: small;
+        }
+        .nav-item:hover {
+            color: white;
+            cursor: pointer;
+        }
+    }
+}

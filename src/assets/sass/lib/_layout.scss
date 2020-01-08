@@ -1,0 +1,21 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    background-color: #131212;
+    overflow: hidden;
+}
+
+.default-layout {
+    display: flex;
+
+    .main {
+        width: 100%;
+        min-width: 1px;
+        
+        display: flex;
+        flex-direction: column;
+    }
+}

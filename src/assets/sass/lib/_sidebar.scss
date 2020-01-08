@@ -1,0 +1,67 @@
+.sidebar {
+    background-color: #131212;
+    color: white;
+
+    .trigger-folder {
+      background-color: grey;
+      padding: 4px;
+      text-transform: uppercase;
+      font-size: medium;
+
+      .buttons {
+        float: right;
+        cursor: pointer;
+
+        .actions {
+          i {
+            padding-left: 1px;
+            padding-right: 1px;
+            margin-left: 2px;
+            margin-right: 2px;
+
+            color: #131212;
+          }
+
+          .carret {
+            padding-left: 4px;
+            font-size: 15px;
+            font-weight: 800;
+          }
+        }
+      }
+    }
+    .tree {
+        height: 100vh;
+
+        .carret {
+            cursor: pointer;
+            margin: 2px;
+        }
+      }
+
+      .tree::-webkit-scrollbar {
+        display: none;
+      }
+      
+      .m-node.placeholder {
+        border: 1px dashed #1385e5;
+      }
+      
+      .m-node .inner {
+        color: #9DA5B4;
+        font-size: 14px;
+        font-family: Menlo;
+      }
+      
+      .m-node .node {
+        display: inline-block;
+        width: 100%;
+        padding: 4px 5px;
+        font-size: medium;
+        cursor: pointer;
+      }
+      
+      .m-node .node.is-active {
+        background-color: #31363F;
+      }
+}

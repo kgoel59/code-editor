@@ -1,11 +1,10 @@
 import React, { Component } from "react";
-import { MDBContainer, MDBRow, MDBCol, MDBBtn } from "mdbreact";
 import { randomBytes } from "crypto";
 import io from "socket.io-client";
 
-import NavBar from "./NavBar";
+//import NavBar from "./NavBar";
 import CodeArea from "./CodeArea";
-import InputArea from "./InputArea";
+//import InputArea from "./InputArea";
 
 // general ip 
 let machine = window.location.protocol + "//" + window.location.hostname + ":" + 5000;
@@ -59,26 +58,7 @@ class MainScreen extends Component {
 
   render() {
     return (
-      <MDBContainer fluid>
-        <NavBar />
-        <MDBRow>
-          <MDBCol md="7">
-            <CodeArea handleEditorDidMount={this.handleEditorDidMount} />
-          </MDBCol>
-          <MDBCol md="4">
-            <InputArea handleInputChange={this.handleInputChange} />
-            <MDBBtn color="indigo" onClick={this.handleCodeSubmit}>
-              Compile
-            </MDBBtn>
-          </MDBCol>
-        </MDBRow>
-        {"Output: " +
-          this.state.output +
-          "  Execution Time: " +
-          this.state.exec_time +
-          "Err: " +
-          this.state.err}
-      </MDBContainer>
+      <CodeArea handleEditorDidMount={this.handleEditorDidMount} />
     );
   }
 }
