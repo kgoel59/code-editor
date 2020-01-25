@@ -58,7 +58,9 @@ class MainScreen extends Component {
 
   render() {
     return (
-      <CodeArea handleEditorDidMount={this.handleEditorDidMount} />
+      <CodeArea handleEditorDidMount={this.handleEditorDidMount} 
+      getFileData={this.props.getFileData}
+      saveFileData={this.props.saveFileData}/>
     );
   }
 }

@@ -5,7 +5,9 @@ import React from 'react';
 function Main(props) {
     return (
         <div>
-            <MainScreen/>
+            <MainScreen 
+            getFileData={props.getFileData}
+            saveFileData={props.saveFileData}/>
         </div>
     );
 }

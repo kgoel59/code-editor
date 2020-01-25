@@ -16,8 +16,17 @@ class App extends Component {
                     exact={route.exact}
                     component={() => {
                       return (
-                        <route.layout>
-                          <route.component/>
+                        <route.layout 
+                        getFileTree={this.props.getFileTree}
+                        fCreateFile={this.props.fCreateFile}
+                        fRenameFile={this.props.fRenameFile}
+                        fDeleteFile={this.props.fDeleteFile}
+                        fCreateDir={this.props.fCreateDir}
+                        fRenameDir={this.props.fRenameDir}
+                        fDeleteDir={this.props.fDeleteDir}>
+                          <route.component 
+                          getFileData={this.props.getFileData}
+                          saveFileData={this.props.saveFileData}/>
                         </route.layout>
                       );
                     }}

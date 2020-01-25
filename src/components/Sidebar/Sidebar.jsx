@@ -16,7 +16,15 @@ class Sidebar extends Component {
             maxWidth="30%"
             minWidth="10%"
             >
-                <FolderMenu/>
+                <FolderMenu 
+                getFileTree={this.props.getFileTree}
+                fCreateFile={this.props.fCreateFile}
+                fRenameFile={this.props.fRenameFile}
+                fDeleteFile={this.props.fDeleteFile}
+                fCreateDir={this.props.fCreateDir}
+                fRenameDir={this.props.fRenameDir}
+                fDeleteDir={this.props.fDeleteDir}/>
+                
             </Resizable>
         );
     }

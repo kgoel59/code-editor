@@ -13,8 +13,8 @@ class FolderMenu extends Component {
         super(props);
 
         this.state = {
-            openMenu: false,
-            tree:  createTree('src',require('./sample/test.json')),
+            openMenu: true,
+            tree:  createTree('src',this.props.getFileTree()),
             active: null
         }
     }
@@ -76,9 +76,75 @@ class FolderMenu extends Component {
     }
 
     createDir = () => {
-        console.log(this.state.active);
+        let name = prompt('Enter dir name');
         let node = this.state.active;
         node.collapsed = false;
+        node.children.push({module: name, children: [], collapsed: true});
+        this.props.fCreateDir();
+        this.forceUpdate();
+    }
+
+    createFile = () => {
+      let name = prompt('Enter file name');
+      let node = this.state.active;
+      node.collapsed = false;
+      node.children.push({module: name, leaf: true})
+      this.props.fCreateFile();
+      this.forceUpdate();
+    }
+
+    rename = () => {
+      let node = this.state.active;
+      let name = prompt('Enter new name',node.module);
+      if(name) {
+        node.module = name;
+        if(node.leaf) {
+          this.props.fRenameFile();
+        } else {
+          this.props.fRenameDir();
+        }
+        this.forceUpdate(); 
+      }
+    }
+
+    deleteNode = (node,parent,index) => {
+      let active = this.state.active;
+      if(node === undefined) {
+        node = this.state.tree;
+        if(node.module === active.module) {
+          node.children = []
+          
+          if(node.leaf) {
+            this.props.fDeleteFile();
+          } else {
+            this.props.fDeleteDir();
+          }
+
+          this.forceUpdate();
+        } else {
+          for(let i=0;i<node.children.length;i++) {
+            this.deleteNode(node.children[i],node,i);
+          }
+        }
+      } else {
+        if(node.module === active.module) {
+          parent.children.splice(index,1);
+
+          if(node.leaf) {
+            this.props.fDeleteFile();
+          } else {
+            this.props.fDeleteDir();
+          }
+          
+          this.forceUpdate();
+        } else {
+          if(!node.leaf) {
+            for(let i=0;i<node.children.length;i++) {
+              this.deleteNode(node.children[i],node,i);
+            }
+          }
+        }
+      }
     }
       
 
@@ -90,6 +156,9 @@ class FolderMenu extends Component {
                  open={this.state.openMenu}
                  active={this.state.active}
                  createDir={this.createDir}
+                 createFile={this.createFile}
+                 rename={this.rename}
+                 deleteNode={this.deleteNode}
                  toggle={this.toggleMenu}/>
             }
             open={this.state.openMenu}
